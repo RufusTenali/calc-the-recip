@@ -1,4 +1,10 @@
 import React from 'react';
+import { Ingredient } from '../utils/parser';
+
+interface IngredientListProps {
+  ingredients: Ingredient[];
+  onIngredientChange: (newFactor: number) => void;
+}
 
 /**
  * IngredientList Component
@@ -25,7 +31,7 @@ import React from 'react';
  *     -   Use a helper to display fractions nicely (e.g. 0.5 -> "1/2").
  */
 
-const IngredientList = ({ ingredients, onIngredientChange }) => {
+const IngredientList: React.FC<IngredientListProps> = ({ ingredients, onIngredientChange }) => {
   if (!ingredients || ingredients.length === 0) {
     return <p className="text-center text-muted">No ingredients found to display.</p>;
   }

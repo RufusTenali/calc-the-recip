@@ -3,15 +3,20 @@ import Header from './components/Header';
 import RecipeInput from './components/RecipeInput';
 import ScalerControls from './components/ScalerControls';
 import IngredientList from './components/IngredientList';
-import { parseRecipeText } from './utils/parser';
+import { parseRecipeText, Ingredient } from './utils/parser';
 import { scaleRecipe } from './utils/scaler';
 
+interface RecipeData {
+  type: string;
+  content: string;
+}
+
 function App() {
-  const [recipeData, setRecipeData] = useState(null);
-  const [ingredients, setIngredients] = useState([]);
+  const [recipeData, setRecipeData] = useState<RecipeData | null>(null);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [scalingFactor, setScalingFactor] = useState(1);
 
-  const handleScaleRequest = (data) => {
+  const handleScaleRequest = (data: RecipeData) => {
     // 1. Parse the input text
     const parsed = parseRecipeText(data.content);
     setRecipeData(data);
@@ -19,7 +24,7 @@ function App() {
     setScalingFactor(1); // Reset factor on new import
   };
 
-  const handleFactorChange = (newFactor) => {
+  const handleFactorChange = (newFactor: number) => {
     setScalingFactor(newFactor);
     // Note: We don't change the 'ingredients' state itself, 
     // we derivation happens in render or we keep a 'baseIngredients' state.

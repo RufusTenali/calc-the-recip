@@ -1,5 +1,10 @@
 import React from 'react';
 
+interface ScalerControlsProps {
+  currentFactor: number;
+  onFactorChange: (factor: number) => void;
+}
+
 /**
  * ScalerControls Component
  * Validates and triggers scaling updates for the recipe.
@@ -27,8 +32,8 @@ import React from 'react';
  *     -   Use glassmorphism background to overlay content if sticky.
  */
 
-const ScalerControls = ({ currentFactor, onFactorChange }) => {
-  const handleInputChange = (e) => {
+const ScalerControls: React.FC<ScalerControlsProps> = ({ currentFactor, onFactorChange }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     onFactorChange(value);
   };
@@ -43,9 +48,9 @@ const ScalerControls = ({ currentFactor, onFactorChange }) => {
               type="number"
               value={currentFactor}
               onChange={handleInputChange}
-              placeholder={currentFactor}
+              placeholder={currentFactor.toString()}
               style={{
-                width: '7.5%',
+                width: '15%',
                 padding: '1rem',
                 borderRadius: '16px',
                 border: '2px solid var(--color-cream-300)',

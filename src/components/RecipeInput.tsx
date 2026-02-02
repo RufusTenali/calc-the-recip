@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Link2, FileText, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const RecipeInput = ({ onScaleRequest }) => {
-  const [activeTab, setActiveTab] = useState('paste'); // 'paste' or 'url'
+interface RecipeInputProps {
+  onScaleRequest: (data: { type: string; content: string }) => void;
+}
+
+const RecipeInput: React.FC<RecipeInputProps> = ({ onScaleRequest }) => {
+  const [activeTab, setActiveTab] = useState<'paste' | 'url'>('paste'); // 'paste' or 'url'
   const [inputText, setInputText] = useState('');
 
   const handleScale = () => {
