@@ -1,3 +1,3 @@
 List of Issues to Address:
 
-1. Scale Input box must be clear when it is clicked to input new number
+1. Scale Input box updated but when the step is changed the value starts from 0

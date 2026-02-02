@@ -33,9 +33,24 @@ interface ScalerControlsProps {
  */
 
 const ScalerControls: React.FC<ScalerControlsProps> = ({ currentFactor, onFactorChange }) => {
+  const [localValue, setLocalValue] = React.useState<string | number>(currentFactor);
+
+  React.useEffect(() => {
+    // Sync with parent only if values differ numerically
+    // This allows the user to type "1." without it snapping back to "1"
+    if (localValue !== '' && Number(localValue) !== currentFactor) {
+      setLocalValue(currentFactor);
+    }
+  }, [currentFactor]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    onFactorChange(value);
+    const val = e.target.value;
+    setLocalValue(val);
+    
+    // Only update parent with valid numbers
+    if (val !== '') {
+      onFactorChange(Number(val));
+    }
   };
 
   return (
@@ -46,7 +61,9 @@ const ScalerControls: React.FC<ScalerControlsProps> = ({ currentFactor, onFactor
       <div style={{ minHeight: '100px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <input
               type="number"
-              value={currentFactor}
+              min="0"
+              step="0.25"
+              value={localValue}
               onChange={handleInputChange}
               placeholder={currentFactor.toString()}
               style={{
@@ -58,16 +75,19 @@ const ScalerControls: React.FC<ScalerControlsProps> = ({ currentFactor, onFactor
                 fontSize: '1rem',
                 outline: 'none'
               }}
-              onFocus={(e) => e.target.style.borderColor = 'var(--color-emerald-600)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--color-cream-300)'}
+              onFocus={(e) => {
+                setLocalValue('');
+                e.target.style.borderColor = 'var(--color-emerald-600)';
+              }}
+              onBlur={(e) => {
+                // Restore value if left empty
+                if (localValue === '') {
+                  setLocalValue(currentFactor);
+                }
+                e.target.style.borderColor = 'var(--color-cream-300)';
+              }}
             />
           </div>
-
-      {/* Quick buttons */}
-      {/* <div style={{ marginTop: "0.5rem" }}>
-        <button onClick={() => onFactorChange(0.5)}>0.5x</button>
-        <button onClick={() => onFactorChange(2)}>2x</button>
-      </div> */}
     </div>
   );
 };
